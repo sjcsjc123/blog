@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <title>博客</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/my.css">
+  <script src="/js/jquery-3.2.1.min.js"></script>
+  <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+  <script type="text/javascript">
+    //初始化Markdown编辑器
+    var contentEditor;
+    $(function() {
+      contentEditor = editormd("md-content", {
+        width   : "100%",//宽度
+        height  : 500,//高度
+        syncScrolling : "single",//单滚动条
+        path    : "/lib/"//依赖的包路径
+      });
+    });
+  </script>
+</head>
+<body>
+
+<!-- 导航-->
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" th:href="@{/}">博客系统</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/search/all}">博客广场</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/blog/own}">我的博客</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/history/list}">历史记录</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/user/myStar}">我的关注</a></li>
+      </ul>
+    </div>
+    <label class="navbar-right row">
+      <h4><em th:text="${session.username}"></em>,你好 <a
+              th:href="@{/blog/loginOut}">
+        退出登录</a>
+      </h4>
+    </label>
+  </div>
+</nav>
+
+<div class="blog-container-aside all-background-color">
+  <div class="introduce-size text-center">
+    <div >
+      <img src="/img/1.png" class="img-circle my-img-size">
+      <em th:text="${detailBlog.username}"></em>
+      <div class="star">
+        +关注
+      </div><br/><br/>
+    </div>
+    <span>发布文章总数:</span><span th:text="${userMsgVo.articleNum}"></span><br/>
+    <span>获得点赞总数:</span><span th:text="${userMsgVo.starNum}"></span><br/>
+    <span>粉丝总数:</span><span th:text="${userMsgVo.fansNum}"></span><br/>
+  </div>
+</div>
+
+<div class="form-group center-block my-text-size all-background-color">
+
+  <div>
+    <h1 th:text="${detailBlog.title}" class="text-center font-color"></h1>
+  </div>
+  <br/>
+
+  <div style="min-height: 500px; border-bottom: solid 1px">
+    <h4 th:utext="${detailBlog.contentHtml}" class="font-color"></h4>
+  </div><br/>
+  <div class="row">
+    <div style="float: left; margin-left: 2%">
+      <span th:text="${detailBlog.username}"></span>
+    </div>
+    <div style="float:right;margin-right: 2%;white-space: nowrap">
+        <span class="glyphicon glyphicon-thumbs-up" style="bottom: 10px"></span>
+        <a th:href="'/blog/thumb/'+${detailBlog.id}" style="text-decoration:none">点赞</a>
+        <a th:href="'/blog/cancel/'+${detailBlog.id}"
+           style="text-decoration:none;color: #4D4D4D">取消</a>
+        <span class="glyphicon glyphicon-star"
+              style="margin-left: 1%"></span>
+        <a th:href="'/blog/star/'+${detailBlog.id}"
+           style="text-decoration:none">
+          收藏</a>
+        <a th:href="'/blog/cancelStar/'+${detailBlog.id}"
+           style="text-decoration:none;color: #4D4D4D">取消</a>
+    </div>
+  </div>
+
+
+  <h4 class="text-center">评论区</h4>
+  <div>
+    <form th:action="@{'/blog/comment/'+${detailBlog.id}+'/0'}" method="post">
+      <input class="comment-size" type="text" placeholder="请输入你的评论"
+             name="comment">
+      <button type="submit">发表</button>
+    </form>
+  </div>
+
+  <div th:each="firstCommentVo : ${firstCommentVos}"
+       style="margin-top: 20px ; border-bottom: solid 1px">
+    <div class="form-group ">
+      <div style="font-size: 20px">
+        <span th:text="${firstCommentVo.parentComment.username}"
+                style="margin-left: 10px"></span>
+        <span>:</span>
+        <span style="margin-left: 10px"
+              th:text="${firstCommentVo.parentComment.comment}"></span>
+        <em th:text="${firstCommentVo.parentComment.createTime}"
+            style="font-size: 18px" class="text-info"></em>
+        <a th:if="${session.username}==${firstCommentVo.parentComment.username}"
+           style="text-decoration: none">删除</a>
+        <a class="reply" style="text-decoration: none"
+           th:if="${session.username}!=${firstCommentVo.parentComment.username}"
+           th:id="${firstCommentVo.parentComment.id}">回复
+        </a>
+      </div>
+
+      <div th:if="${firstCommentVo.childComments.size()>0}" style="font-size:
+      20px ;margin-left: 30px">
+        <div th:each="firstComment : ${firstCommentVo.childComments}">
+          <div
+                  th:if="${firstComment.replyComment.parentId}==${firstCommentVo.parentComment.id}">
+            <span th:text="${firstComment.replyComment.child}"
+                  style="margin-left: 10px"></span>
+            <span>@</span><span
+                  th:text="${firstCommentVo.parentComment.username}"></span>
+            <span>:</span>
+            <span style="margin-left: 10px"
+                  th:text="${firstComment.replyComment.comment}"></span>
+            <em th:text="${firstComment.replyComment.createTime}" style="font-size:
+              18px"
+                class="text-info"></em>
+            <a th:if="${session.username} == ${firstComment.replyComment.child}"
+               style="text-decoration: none">删除</a>
+            <a class="reply" style="text-decoration: none"
+               th:if="${session.username} != ${firstComment.replyComment.child}"
+               th:id="${firstComment.replyComment.parentId}">回复</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script th:inline="javascript">
+  $(function (){
+    $(".reply").click(function (){
+      var id = $($(this)).attr("id");
+      $('.reply-input').remove();
+      $(this).parent().append("<form action='/blog/comment/"+'[[${detailBlog.id}]]'+"/"+id+"' method='post' class='reply-input'>" +
+              "<input name='comment' type='text'>" +
+              "<button type='submit'>回复</button></form>");
+
+    });
+  });
+</script>
+<script th:inline="javascript">
+  $(function (){
+    var username = [[${detailBlog.username}]];
+    var $div = $('.star');
+    //发送ajax请求判断是否关注
+    var flag = isStar(username);
+    if (flag){
+      $div.css('color', '#ccc');
+      $div.html('已关注');
+    }else {
+      $div.css('color','#333');
+      $div.html('+关注');
+    }
+
+    $div.on('click',function (){
+        if ($div.html() === "+关注"){
+          var result = load(username);
+          //关注成功
+          if (result){
+            $div.css('color', '#ccc');
+            $div.html('已关注');
+          }else {
+
+          }
+        }else {
+          var  result = cancel(username);
+          if (result){
+            $div.css('color','#333');
+            $div.html('+关注');
+          }else {
+          }
+        }
+    });
+
+    function isStar(param){
+      var flag;
+      $.ajax({
+        type: 'get',
+        url : '/user/isStar/'+param,
+        async : false,
+        success : function (result){
+          flag = result;
+        }
+      });
+      return flag;
+    }
+
+    //关注成功返回false,发生错误返回true
+    function load(param){
+      var flag;
+      $.ajax({
+        type : 'get',
+        url : '/user/star/'+param,
+        async : false,
+        success : function (result){
+          if (result.toString() == "关注成功"){
+            flag = true;
+          }else {
+            flag = false;
+            alert(result);
+          }
+        }
+      })
+      return flag;
+    }
+
+    function cancel(param){
+      var flag;
+      $.ajax({
+        type: 'get',
+        url: '/user/cancel/'+param,
+        async : false,
+        success: function (result){
+          if (result.toString() == "取消关注成功"){
+            flag = true;
+          }else {
+            flag = false;
+            alert(result);
+          }
+        }
+      })
+      return flag;
+    }
+  })
+</script>
+</body>
+</html>

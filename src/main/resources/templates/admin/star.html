@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>博客</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/my.css">
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+</head>
+<body>
+
+<!-- 导航-->
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}">博客系统</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/search/all}">博客广场</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/blog/own}">我的博客</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/history/list}">历史记录</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/user/myStar}">我的关注</a></li>
+            </ul>
+        </div>
+        <label class="navbar-right row">
+            <h4><em th:text="${session.username}"></em>,你好 <a
+                    th:href="@{/blog/loginOut}">
+                退出登录</a>
+            </h4>
+        </label>
+    </div>
+</nav>
+
+<div class="index-blog">
+    <div class="introduce-size">
+        <div th:each="starActicleVo:${starArticleVos}">
+            <em th:text="${starActicleVo.author}"></em><br/><br/>
+            <div th:each="indexBlog:${starActicleVo.indexBlogEs}"
+                 style="margin-left: 1%">
+                <a th:href="@{'/blog/list/'+${indexBlog.id}}">
+                    <em th:text="${indexBlog.title}"></em>
+                </a>
+            </div><br/>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="index-recommend">
+    <label>最新文章</label>
+    <div th:each="newEm : ${newBlogs}">
+        <a th:href="@{'/blog/list/'+${newEm.id}}"
+           style="text-decoration: none">
+            <p th:text="${newEm.title}"></p>
+        </a>
+    </div>
+    <label style="margin-top: 20px">最热文章</label>
+    <div th:each="weightEm : ${weight}">
+        <a th:href="@{'/blog/list/'+${weightEm.id}}"
+           style="text-decoration: none">
+            <p th:text="${weightEm.title}"></p>
+        </a>
+    </div>
+
+    <label style="margin-top: 20px">最热话题</label>
+    <div th:each="categoryName : ${categoryNames}">
+        <a th:href="@{'/search/keyword/'+${categoryName}}"
+           style="text-decoration: none">
+            <p th:text="${categoryName}"></p>
+        </a>
+    </div>
+</div>
+</body>
+</html>

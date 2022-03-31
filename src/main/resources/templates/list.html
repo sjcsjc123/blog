@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <title>博客首页</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/my.css">
+  <script src="/js/jquery-3.2.1.min.js"></script>
+  <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+</head>
+<body>
+
+<!-- 导航-->
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" th:href="@{/}">博客系统</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/search/all}">博客广场</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/blog/own}">我的博客</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/error/noLogin}">历史记录</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/error/noLogin}">我的关注</a></li>
+      </ul>
+    </div>
+    <form class="navbar-form navbar-left" action="/search/keyword" method="post">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="搜文章"
+               name="keyword">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    <form class="navbar-form navbar-left" action="/search/author" method="post">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="搜作者"
+               name="author">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    <a class="navbar-right" th:href="@{/blog/toLogin}">
+      <h4>登录入口</h4>
+    </a>
+  </div>
+</nav>
+
+<div>
+  <div class="index-blog">
+    <div th:each="show : ${indexBlogs}">
+      <div class="form-group">
+        <p>
+          <a th:href="'/blog/list/'+${show.id}"
+             th:text="${show.title}"
+             style="text-decoration: none;margin-left: 2%"></a>
+        </p>
+        <p class="text-lowercase">
+          <em class="form-control blog-size"
+              th:text="${show.description}"></em>
+        </p>
+        <div>
+          <div class="thumb-size">
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+            <span th:text="${show.thumbUpNum}"></span>
+            <span class="glyphicon glyphicon-star"
+                  style="margin-left: 1%"></span>
+            <span th:text="${show.starNum}"></span>
+            <span class="glyphicon glyphicon-eye-open"
+                  style="margin-left: 1%"></span>
+            <span th:text="${show.visitNum}"></span>
+            <span class="glyphicon glyphicon-comment"
+                  style="margin-left: 1%"></span>
+            <span th:text="${show.commentNum}"></span>
+          </div>
+          <div class="author-size">
+            <span th:text="${show.author}"></span>
+            <span style="margin-left: 1%" th:text="${show.createTime}"></span>
+          </div>
+        </div><br/>
+
+      </div>
+    </div>
+  </div>
+  <div class="index-recommend">
+    <div style="margin-left: 3%">
+      <label>最新文章</label>
+      <div th:each="newEm : ${newBlogs}">
+        <a th:href="@{'/blog/list/'+${newEm.id}}"
+           style="text-decoration: none">
+          <p th:text="${newEm.title}"></p>
+        </a>
+      </div>
+      <label style="margin-top: 4%">最热文章</label>
+      <div th:each="weightEm : ${weight}">
+        <a th:href="@{'/blog/list/'+${weightEm.id}}"
+           style="text-decoration: none">
+          <p th:text="${weightEm.title}"></p>
+        </a>
+      </div>
+
+      <label style="margin-top: 4%">最热话题</label>
+      <div th:each="categoryName : ${categoryNames}">
+        <a style="text-decoration: none"
+           th:href="@{'/search/keyword/'+${categoryName}}">
+          <p th:text="${categoryName}"></p>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

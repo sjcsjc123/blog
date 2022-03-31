@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <title>登录</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/my.css">
+  <script src="/js/jquery-3.2.1.min.js"></script>
+  <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+</head>
+<body>
+
+<!-- 导航-->
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" th:href="@{/}">博客系统</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/search/all}">博客广场</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/blog/own}">我的博客</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/error/noLogin}">历史记录</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/error/noLogin}">我的关注</a></li>
+      </ul>
+    </div>
+    <a class="navbar-right" th:href="@{/blog/toLogin}">
+      <h4>登录入口</h4>
+    </a>
+  </div>
+</nav>
+
+
+<form action="/blog/register" method="post">
+  <div class="login-size" >
+    <div class="login-title-size center">
+      <h3 class="text-center" style="color:whitesmoke;">Admin Register</h3>
+      <div class="form-group text-center">
+        <span style="color: whitesmoke">用户名:</span>
+        <input type="text" placeholder="请输入用户名" name="username">
+      </div>
+      <div class="form-group text-center">
+        <span style="color: whitesmoke">手机号:</span>
+        <input type="text" placeholder="请输入手机号" name="phone">
+      </div>
+      <div class="form-group text-center">
+        <span style="color: whitesmoke">密码:</span>
+        <input type="password" placeholder="请输入密码" name="password">
+      </div>
+      <div class="form-group text-center">
+        <span style="color: whitesmoke">确认密码:</span>
+        <input type="password" placeholder="请再次输入密码" name="confirm">
+      </div>
+      <p class="text-center">
+        <button type="submit">REGISTER</button></p>
+      <div class="text-center">
+        <span class="text-center" style="color: whitesmoke">已有账号？去</span>
+        <a href="/blog/toLogin" style="text-decoration: none; color: red">登录</a>
+      </div>
+    </div>
+  </div>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <title>博客</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/my.css">
+  <script src="/js/jquery-3.2.1.min.js"></script>
+  <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" th:href="@{/}">博客系统</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/search/all}">博客广场</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/blog/own}">我的博客</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/history/list}">历史记录</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/user/myStar}">我的关注</a></li>
+      </ul>
+    </div>
+    <label class="navbar-right row">
+      <h4><em th:text="${session.username}"></em>,你好 <a
+              th:href="@{/blog/loginOut}">
+        退出登录</a>
+      </h4>
+    </label>
+  </div>
+</nav>
+
+
+<h3>个人博客管理   <a th:href="@{/blog/toAdd}">新增博客</a></h3>
+<div>
+  <table class="table table-bordered table-color">
+    <tr>
+      <td>博客名称</td>
+      <td>博客描述</td>
+      <td>作者</td>
+      <td>发布时间</td>
+      <td class="table-size"> </td>
+    </tr>
+    <tr th:each="indexBlog :${indexBlogs}">
+      <td th:text="${indexBlog.title}"></td>
+      <td th:text="${indexBlog.description}"></td>
+      <td th:text="${indexBlog.author}"></td>
+      <td th:text="${indexBlog.createTime}"></td>
+      <td>
+        <h4>
+          <a th:href="@{/blog/toUpdate}">更改</a>
+          <a th:href="'/blog/list/'+${indexBlog.id}">查看</a>
+          <a th:href="'/blog/delete/'+${indexBlog.id}">删除</a>
+        </h4>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <title>博客首页</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/my.css">
+  <script src="/js/jquery-3.2.1.min.js"></script>
+  <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+</head>
+<body>
+
+<!-- 导航-->
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" th:href="@{/}">博客系统</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/search/all}">博客广场</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/blog/own}">我的博客</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/error/noLogin}">历史记录</a></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/error/noLogin}">我的关注</a></li>
+      </ul>
+    </div>
+    <a class="navbar-right" th:href="@{/blog/toLogin}">
+      <h4>登录入口</h4>
+    </a>
+  </div>
+</nav>
+
+<div class="blog-container-aside all-background-color">
+  <div class="introduce-size text-center">
+    <div >
+      <img src="/img/1.png" class="img-circle my-img-size">
+      <em th:text="${detailBlog.username}"></em>
+      <div class="star">
+        +关注
+      </div><br/><br/>
+    </div>
+    <span>发布文章总数:</span><span th:text="${userMsgVo.articleNum}"></span><br/>
+    <span>获得点赞总数:</span><span th:text="${userMsgVo.starNum}"></span><br/>
+    <span>粉丝总数:</span><span th:text="${userMsgVo.fansNum}"></span><br/>
+  </div>
+</div>
+
+<!-- 文章和评论区 -->
+<div class="form-group center-block my-text-size all-background-color">
+  <div>
+    <h1 th:text="${detailBlog.title}" class="text-center font-color"></h1>
+  </div>
+  </br>
+  <div style="min-height: 500px;border-bottom: solid 1px">
+    <h4 th:utext="${detailBlog.contentHtml}" class="font-color"></h4>
+  </div></br>
+
+  <h4 class="text-center">评论区</h4>
+  <div>
+    <form>
+      <input class="comment-size" readonly placeholder="请登陆后发表评论">
+    </form>
+  </div>
+
+  <div th:each="firstCommentVo : ${firstCommentVos}"
+       style="margin-top: 20px ; border-bottom: solid 1px">
+    <div class="form-group ">
+      <div style="font-size: 20px">
+        <span th:text="${firstCommentVo.parentComment.username}"
+              style="margin-left: 10px"></span>
+        <span>:</span>
+        <span style="margin-left: 10px"
+              th:text="${firstCommentVo.parentComment.comment}"></span>
+        <em th:text="${firstCommentVo.parentComment.createTime}"
+            style="font-size: 18px" class="text-info"></em>
+      </div>
+
+      <div th:if="${firstCommentVo.childComments.size()>0}" style="font-size:
+      20px ;margin-left: 30px">
+        <div th:each="firstComment : ${firstCommentVo.childComments}">
+          <div
+                  th:if="${firstComment.replyComment.parentId}==${firstCommentVo.parentComment.id}">
+            <span th:text="${firstComment.replyComment.child}"
+                  style="margin-left: 10px"></span>
+            <span>@</span><span
+                  th:text="${firstCommentVo.parentComment.username}"></span>
+            <span>:</span>
+            <span style="margin-left: 10px"
+                  th:text="${firstComment.replyComment.comment}"></span>
+            <em th:text="${firstComment.replyComment.createTime}" style="font-size:
+              18px"
+                class="text-info"></em>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+  $(function (){
+    var $div = $('.star');
+    $div.on('click',function (){
+      location.href = "/error/noLogin";
+    })
+  })
+</script>
+</body>
+</html>

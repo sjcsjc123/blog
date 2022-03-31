@@ -1,0 +1,149 @@
+.blog-container-aside{
+    box-sizing: border-box;
+    display: block;
+    float: left;
+    line-height: 22px;
+    position: static;
+    z-index: auto;
+    border: solid 1px;
+    width: 25%;
+    margin-left: 5%;
+    min-height: 200px;
+}
+.my-img-size{
+    width: 50px;
+    height: 50px;
+    margin-left: 43%;
+    display: block;
+}
+
+.introduce-size{
+    margin-left: 2%;
+    margin-top: 2%;
+}
+
+.my-text-size{
+    float: right;
+    box-sizing: border-box;
+    display: block;
+    line-height: 22px;
+    position: static;
+    z-index: auto;
+    border: solid 1px;
+    width: 63%;
+    margin-right: 5%;
+    min-height: 70%;
+}
+body{
+    background-image: url("../img/background.jpg");
+    background-size: cover;
+    height: 100vh;
+    background-position: 50% 0px;
+    background-repeat: no-repeat no-repeat;
+}
+.index-blog{
+    display: block;
+    line-height: 22px;
+    position: static;
+    z-index: auto;
+    border: none 1px;
+    background-color: white;
+    width: 70%;
+    min-height: 70%;
+    float: left;
+    margin-left: 4%;
+    margin-top: 0.5%;
+}
+.blog-size{
+    margin-left: 2%;
+    width: 96%;
+    height: auto;
+}
+.thumb-size{
+    float: left;
+    white-space: nowrap;
+    margin-left: 2%;
+    font-size: 15px;
+}
+.author-size{
+    float: right;
+    margin-right: 2%;
+    white-space: nowrap;
+    font-size: 15px;
+}
+.login-size{
+    margin-left: 38%;
+    margin-top: 150px;
+    width: 300px;
+    min-height: 300px;
+    border-style: wave;
+    border-radius: 10px;
+    display: block;
+    position: absolute;
+    background-image: url("../img/login.jpg");
+    background-size: cover;
+    background-color: rgba(255,255,255,0.5);
+    background-repeat: no-repeat;
+}
+.login-border{
+    border-radius: 10px;
+    background-color: #00a8c6;
+}
+.login-title-size{
+    border: none;
+    margin-top: 60px;
+}
+
+.comment-size{
+    width: 90%;
+    margin-left: 5%;
+    min-height: 3%;
+}
+
+.comment-size2{
+    width: 80%;
+    margin-left: 2%;
+    min-height: 20px;
+}
+
+.table-color{
+    margin-left: 20px;
+    width: 1480px;
+    background-color: white;
+}
+
+.all-background-color{
+    background-color: white;
+}
+
+.index-recommend{
+    display: block;
+    line-height: 22px;
+    position: static;
+    z-index: auto;
+    border: none 1px;
+    background-color: white;
+    width: 20%;
+    float: right;
+    margin-right: 4%;
+    margin-top: 0.5%;
+}
+.index-img {
+    position: relative;
+    width: 90%;
+    margin-top: 5%;
+    margin-left: 5%;
+    overflow: hidden;
+}
+
+.history-size{
+    width: 90%;
+    margin-left: 5%;
+    display: block;
+    line-height: 22px;
+    position: static;
+    z-index: auto;
+    border: none 1px;
+    background-color: white;
+    margin-top: 0.5%;
+}
