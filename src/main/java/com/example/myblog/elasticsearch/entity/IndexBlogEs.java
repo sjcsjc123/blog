@@ -11,6 +11,9 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author SJC
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
