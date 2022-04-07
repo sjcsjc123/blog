@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     //表明目前只开设了这几个专栏
     public final static List<String> categoryNames = Arrays.asList("springboot",
-            "java", "redis","mysql","http","Linux");
+            "java", "redis","mysql","http","Linux","go");
 
     @Override
     public void save(ArticleVo articleVo, String username) {
