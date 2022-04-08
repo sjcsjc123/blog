@@ -1,11 +1,11 @@
 package com.example.myblog.controller.com;
 
 import com.example.myblog.domain.DetailBlog;
+import com.example.myblog.interceptor.BlogInterceptor;
 import com.example.myblog.vo.UserMsgVo;
 import com.example.myblog.elasticsearch.entity.IndexBlogEs;
 import com.example.myblog.elasticsearch.service.SearchService;
 import com.example.myblog.exception.MyProjectException;
-import com.example.myblog.interceptor.CartInterceptor;
 import com.example.myblog.service.*;
 import com.example.myblog.vo.FirstCommentVo;
 import com.example.myblog.vo.TempUserVo;
@@ -44,7 +44,7 @@ public class IndexBlogController {
         String username = (String) session.getAttribute("username");
         String userKey = null;
         if (username == null){
-            TempUserVo tempUserVo = CartInterceptor.threadLocal.get();
+            TempUserVo tempUserVo = BlogInterceptor.threadLocal.get();
             userKey = tempUserVo.getUserKey();
         }else {
             userKey = username;
@@ -87,7 +87,7 @@ public class IndexBlogController {
             session.setAttribute("errorMsg",e.getMyProjectExceptionEnum().getMsg());
             return "error/505";
         }
-        return "redirect:blog/list/"+id;
+        return "redirect:/blog/list/"+id;
     }
 
     @GetMapping("/cancel/{id}")

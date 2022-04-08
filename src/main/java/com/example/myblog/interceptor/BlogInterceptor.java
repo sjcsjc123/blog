@@ -2,6 +2,8 @@ package com.example.myblog.interceptor;
 
 import com.example.myblog.utils.JwtTokenUtil;
 import com.example.myblog.vo.TempUserVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,9 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 /**
- * 购物车拦截器，实现未登录和登录的区分
+ * 拦截器，实现未登录和登录的区分
+ * @author SJC
  */
-public class CartInterceptor implements HandlerInterceptor {
+public class BlogInterceptor implements HandlerInterceptor {
+
+    private final Logger logger =
+            LoggerFactory.getLogger(BlogInterceptor.class);
 
     public static final ThreadLocal<TempUserVo> threadLocal = new ThreadLocal<>();
 
@@ -24,6 +30,7 @@ public class CartInterceptor implements HandlerInterceptor {
         String token = request.getHeader(JwtTokenUtil.AUTH_HEADER_KEY);
         if (token != null){
             //表示用户已经登录
+            logger.info("user already login");
         }
         //用户未登录
         Cookie[] cookies = request.getCookies();
@@ -38,6 +45,7 @@ public class CartInterceptor implements HandlerInterceptor {
         if (tempUserVo.getUserKey()== null){
             String userKey = UUID.randomUUID().toString().replace("-", "");
             tempUserVo.setUserKey(userKey);
+            logger.info("setting userKey ...");
             //标记第一次访问
             tempUserVo.setFirst(true);
         }
@@ -52,6 +60,7 @@ public class CartInterceptor implements HandlerInterceptor {
         TempUserVo tempUserVo = threadLocal.get();
         //如果是第一次访问
         if (tempUserVo.isFirst()){
+            logger.info("user first visit");
             String userKey = tempUserVo.getUserKey();
             Cookie cookie = new Cookie("user-key", userKey);
             cookie.setMaxAge(60*60*24*30);

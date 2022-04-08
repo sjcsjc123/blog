@@ -13,6 +13,8 @@ import com.example.myblog.service.DetailBlogService;
 import com.example.myblog.service.IndexBlogService;
 import com.example.myblog.vo.ArticleVo;
 import com.example.myblog.vo.IndexBlogVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -26,8 +28,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author SJC
+ */
 @Service
 public class IndexBlogServiceImpl implements IndexBlogService {
+
+    private final Logger logger =
+            LoggerFactory.getLogger(IndexBlogServiceImpl.class);
 
     @Autowired
     private IndexBlogMapper indexBlogMapper;
@@ -72,15 +80,20 @@ public class IndexBlogServiceImpl implements IndexBlogService {
         source.setCommentNum(0);
         source.setStarNum(0);
         searchMapper.save(source);
+        logger.info("elasticsearch save index blog success");
         indexBlogMapper.insert(indexBlog);
+        logger.info("mysql insert index blog success");
         categoryService.save(articleVo,username);
+        logger.info("mysql insert category success");
         detailBlogService.save(articleVo,username);
+        logger.info("mysql insert detail blog success");
     }
 
     @Override
     public void deleteById(Long id) {
         indexBlogMapper.deleteById(id);
         searchMapper.deleteById(id);
+        logger.info("index blog and detail blog delete success");
     }
 
     @Override
@@ -88,8 +101,10 @@ public class IndexBlogServiceImpl implements IndexBlogService {
         BoundHashOperations<String, String, String> thumbUpNum =
                 redisTemplate.boundHashOps("thumbUpNum"+id.toString());
         if (thumbUpNum.hasKey(username)){
+            logger.error(MyProjectExceptionEnum.REPEAT_THUMB.getMsg());
             throw new MyProjectException(MyProjectExceptionEnum.REPEAT_THUMB);
         }else {
+            logger.info("update thumb up num success");
             thumbUpNum.put(username, username);
         }
     }
@@ -100,8 +115,10 @@ public class IndexBlogServiceImpl implements IndexBlogService {
                 redisTemplate.boundHashOps("thumbUpNum"+id.toString());
         if (!thumbUpNum.hasKey(username)){
             //不存在表明未点赞
+            logger.error(MyProjectExceptionEnum.NO_THUMB.getMsg());
             throw new MyProjectException(MyProjectExceptionEnum.NO_THUMB);
         }else {
+            logger.info("cancel thumb up success");
             thumbUpNum.delete(username);
         }
     }
@@ -111,8 +128,10 @@ public class IndexBlogServiceImpl implements IndexBlogService {
         BoundHashOperations<String, String, String> starNum =
                 redisTemplate.boundHashOps("starNum"+id.toString());
         if (starNum.hasKey(username)){
+            logger.error(MyProjectExceptionEnum.REPEAT_STAR.getMsg());
             throw new MyProjectException(MyProjectExceptionEnum.REPEAT_STAR);
         }else {
+            logger.info("star success");
             starNum.put(username,username);
         }
     }
@@ -122,8 +141,10 @@ public class IndexBlogServiceImpl implements IndexBlogService {
         BoundHashOperations<String, String, String> starNum =
                 redisTemplate.boundHashOps("starNum"+id.toString());
         if (!starNum.hasKey(username)){
+            logger.error(MyProjectExceptionEnum.NO_STAR.getMsg());
             throw new MyProjectException(MyProjectExceptionEnum.NO_STAR);
         }else {
+            logger.info("cancel star success");
             starNum.delete(username);
         }
     }

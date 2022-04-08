@@ -7,6 +7,8 @@ import com.example.myblog.mapper.*;
 import com.example.myblog.service.BlogCommentService;
 import com.example.myblog.vo.FirstCommentVo;
 import com.example.myblog.vo.ReplyCommentVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,23 +25,22 @@ import java.util.List;
 /**
  * 优化：
  *      将从数据库增删改查改为从mongoDB中增删改查
+ * @author SJC
  */
 @Service
 public class BlogCommentServiceImpl implements BlogCommentService {
 
-    @Autowired
-    private IndexBlogMapper indexBlogMapper;
+    private final Logger logger =
+            LoggerFactory.getLogger(BlogCommentServiceImpl.class);
+
     @Autowired
     private MDParentCommentMapper mdParentCommentMapper;
     @Autowired
     private MDReplyCommentMapper mdReplyCommentMapper;
-    @Autowired
-    private StringRedisTemplate redisTemplate;
 
     private List<FirstCommentVo> firstCommentVos = new ArrayList<>();
     private List<ReplyCommentVo> replyCommentVos = new ArrayList<>();
 
-    //@CacheEvict(cacheNames = "comment",allEntries = true)
     @Override
     public void comment(String comment, Long parentId, Long articleId,
                         String username) {
@@ -51,7 +52,7 @@ public class BlogCommentServiceImpl implements BlogCommentService {
             parentComment.setCreateTime(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
             parentComment.setUsername(username);
             mdParentCommentMapper.save(parentComment);
-            //parentCommentMapper.insert(parentComment);
+            logger.info("parent comment sava success");
         }else {
             //子评论，插入到回复表
             ReplyComment replyComment = new ReplyComment();
@@ -59,26 +60,18 @@ public class BlogCommentServiceImpl implements BlogCommentService {
             replyComment.setParentId(parentId.toString());
             ParentComment parentComment =
                     mdParentCommentMapper.findById(parentId.toString()).get();
-            /*QueryWrapper<ParentComment> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("id",parentId);
-            ParentComment parentComment = parentCommentMapper.selectOne
-             (queryWrapper);*/
             replyComment.setParent(parentComment.getUsername());
             replyComment.setChild(username);
             replyComment.setComment(comment);
             mdReplyCommentMapper.save(replyComment);
-            //replyCommentMapper.insert(replyComment);
+            logger.info("parent comment sava success");
         }
+        logger.info("comment success");
     }
 
-    //@Cacheable(cacheNames = "comment",key = "'comment:'+#articleId")
     @Override
     public List<FirstCommentVo> show(Long articleId) {
         //查询所有一级评论
-        /*QueryWrapper<ParentComment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("article_id",articleId);
-        List<ParentComment> parentComments =
-                parentCommentMapper.selectList(queryWrapper);*/
         List<ParentComment> parentComments =
                 mdParentCommentMapper.findByArticleId(articleId.toString());
         return generate(parentComments);
@@ -86,10 +79,6 @@ public class BlogCommentServiceImpl implements BlogCommentService {
 
     private List<FirstCommentVo> generate(List<ParentComment> parentComments){
         for (ParentComment parentComment : parentComments) {
-            /*QueryWrapper<ReplyComment> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("parent_id",parentComment.getId());
-            List<ReplyComment> replyComments =
-                    replyCommentMapper.selectList(queryWrapper);*/
             List<ReplyComment> replyComments =
                     mdReplyCommentMapper.findByParentId(parentComment.getId());
             for (ReplyComment replyComment : replyComments) {
@@ -107,10 +96,6 @@ public class BlogCommentServiceImpl implements BlogCommentService {
     }
 
     private void findChildComment(ReplyComment comment){
-        /*QueryWrapper<ReplyComment> wrapper = new QueryWrapper<>();
-        wrapper.eq("parent",comment.getChild());
-        List<ReplyComment> childComments =
-                replyCommentMapper.selectList(wrapper);*/
         List<ReplyComment> childComments =
                 mdReplyCommentMapper.findByParent(comment.getChild());
         replyCommentVos.add(new ReplyCommentVo(comment,childComments));

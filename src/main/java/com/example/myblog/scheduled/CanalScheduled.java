@@ -8,6 +8,7 @@ import com.alibaba.otter.canal.protocol.Message;
 import com.example.myblog.domain.IndexBlog;
 import com.example.myblog.elasticsearch.entity.IndexBlogEs;
 import com.example.myblog.elasticsearch.mapper.SearchMapper;
+import com.example.myblog.mapper.HistoryMapper;
 import com.example.myblog.vo.CanalRowDataVo;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -27,9 +28,11 @@ public class CanalScheduled {
 
     @Autowired
     private SearchMapper searchMapper;
+    @Autowired
+    private HistoryMapper historyMapper;
 
     @Scheduled(cron = "* * * * * ?")
-    public void StartService() throws InterruptedException, InvalidProtocolBufferException {
+    public void StartService() throws InvalidProtocolBufferException {
         //创建链接
         CanalConnector canalConnector = CanalConnectors.newSingleConnector(
                 new InetSocketAddress("localhost", 11111),
@@ -81,6 +84,7 @@ public class CanalScheduled {
             IndexBlog indexBlog =
                     beforeAndAfterDatum.getBefore().toJavaObject(IndexBlog.class);
             searchMapper.deleteById(indexBlog.getId());
+            historyMapper.deleteById(indexBlog.getId().toString());
         }
     }
 

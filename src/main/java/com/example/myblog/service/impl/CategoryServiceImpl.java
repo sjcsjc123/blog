@@ -7,6 +7,8 @@ import com.example.myblog.mapper.CategoryMapper;
 import com.example.myblog.mapper.CategoryWeightMapper;
 import com.example.myblog.service.CategoryService;
 import com.example.myblog.vo.ArticleVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,6 +21,9 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
+    private final Logger logger =
+            LoggerFactory.getLogger(CategoryServiceImpl.class);
+
     @Autowired
     private CategoryMapper categoryMapper;
     @Autowired
@@ -28,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     //表明目前只开设了这几个专栏
     public final static List<String> categoryNames = Arrays.asList("springboot",
-            "java", "redis","mysql","http","Linux","go");
+            "java", "redis","mysql","http","Linux","go","算法","博客");
 
     @Override
     public void save(ArticleVo articleVo, String username) {
@@ -40,6 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
                 category.setCategoryName(categoryNames.get(i));
                 categoryMapper.insert(category);
                 //此处可采用redis的incr方法
+                logger.info(category+"already insert into table");
                 QueryWrapper<CategoryWeight> wrapper = new QueryWrapper<>();
                 wrapper.eq("category",categoryNames.get(i));
                 CategoryWeight categoryWeight =
