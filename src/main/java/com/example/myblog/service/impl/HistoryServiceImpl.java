@@ -6,6 +6,8 @@ import com.example.myblog.elasticsearch.mapper.SearchMapper;
 import com.example.myblog.mapper.HistoryMapper;
 import com.example.myblog.service.HistoryService;
 import com.example.myblog.vo.HistoryVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +16,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author SJC
+ */
 @Service
 public class HistoryServiceImpl implements HistoryService {
+
+    private final Logger logger =
+            LoggerFactory.getLogger(HistoryServiceImpl.class);
 
     @Autowired
     private HistoryMapper historyMapper;
@@ -34,12 +42,13 @@ public class HistoryServiceImpl implements HistoryService {
         history.setUsername(username);
         history.setTitle(indexBlogEs.getTitle());
         historyMapper.save(history);
+        logger.info("create history success");
     }
 
     @Override
     public List<HistoryVo> list(String username) {
         List<History> histories =
-                historyMapper.findByUsernameOrderByCreateTimeAsc(username);
+                historyMapper.findByUsernameOrderByCreateTimeDesc(username);
         List<HistoryVo> historyVos = new ArrayList<>();
         List<String> categories = new ArrayList<>();
         for (History history : histories) {

@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface HistoryMapper extends MongoRepository<History,String> {
 
-    List<History> findByUsernameOrderByCreateTimeAsc(String username);
+    List<History> findByUsernameOrderByCreateTimeDesc(String username);
 
 }

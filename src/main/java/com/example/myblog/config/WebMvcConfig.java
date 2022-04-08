@@ -1,12 +1,15 @@
 package com.example.myblog.config;
 
-import com.example.myblog.interceptor.CartInterceptor;
+import com.example.myblog.interceptor.BlogInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * @author SJC
+ */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
@@ -17,12 +20,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public CartInterceptor cartInterceptor(){
-        return new CartInterceptor();
+    public BlogInterceptor blogInterceptor(){
+        return new BlogInterceptor();
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(cartInterceptor());
+        registry.addInterceptor(blogInterceptor());
     }
 }

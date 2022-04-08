@@ -4,11 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.myblog.domain.MyStar;
 import com.example.myblog.mapper.MyStarMapper;
 import com.example.myblog.service.MyStarService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author SJC
+ */
 @Service
 public class MyStarServiceImpl implements MyStarService {
 
