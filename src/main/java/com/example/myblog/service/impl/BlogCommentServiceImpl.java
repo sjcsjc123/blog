@@ -3,6 +3,8 @@ package com.example.myblog.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.myblog.domain.ParentComment;
 import com.example.myblog.domain.ReplyComment;
+import com.example.myblog.elasticsearch.entity.IndexBlogEs;
+import com.example.myblog.elasticsearch.mapper.SearchMapper;
 import com.example.myblog.mapper.*;
 import com.example.myblog.service.BlogCommentService;
 import com.example.myblog.vo.FirstCommentVo;
@@ -37,6 +39,8 @@ public class BlogCommentServiceImpl implements BlogCommentService {
     private MDParentCommentMapper mdParentCommentMapper;
     @Autowired
     private MDReplyCommentMapper mdReplyCommentMapper;
+    @Autowired
+    private SearchMapper searchMapper;
 
     private List<FirstCommentVo> firstCommentVos = new ArrayList<>();
     private List<ReplyCommentVo> replyCommentVos = new ArrayList<>();
@@ -67,6 +71,9 @@ public class BlogCommentServiceImpl implements BlogCommentService {
             logger.info("parent comment sava success");
         }
         logger.info("comment success");
+        IndexBlogEs indexBlogEs = searchMapper.findById(articleId).get();
+        indexBlogEs.setCommentNum(indexBlogEs.getCommentNum()+1);
+        searchMapper.save(indexBlogEs);
     }
 
     @Override

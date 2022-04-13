@@ -27,6 +27,7 @@ import java.util.List;
 
 /**
  * 关注和取消关注功能的后台实现
+ * @author SJC
  */
 @Controller
 @RequestMapping("/user")
@@ -47,23 +48,16 @@ public class UserController {
                        HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username1 = (String) session.getAttribute("username");
         if (username1.equals(username)){
-            /*session.setAttribute("errorMsg",
-                    MyProjectExceptionEnum.ERROR_STAR.getMsg());
-            response.sendRedirect("/error/505");*/
             return MyProjectExceptionEnum.ERROR_STAR.getMsg();
         }
         BoundHashOperations<String, String, String> ops =
                 redisTemplate.boundHashOps(username+"fans");
         if (ops.hasKey(username1)){
-            /*session.setAttribute("errorMsg",
-                    MyProjectExceptionEnum.REPEAT_STAR1.getMsg());
-            response.sendRedirect("/error/505");*/
             return MyProjectExceptionEnum.REPEAT_STAR1.getMsg();
         }else {
             myStarService.star(username,username1);
             ops.put(username1,username1);
         }
-        /*response.getWriter().write("关注成功");*/
         return "关注成功";
     }
 
@@ -90,15 +84,11 @@ public class UserController {
         BoundHashOperations<String, String, String> ops =
                 redisTemplate.boundHashOps(username+"fans");
         if (ops.hasKey(username1)){
-            /*session.setAttribute("errorMsg",
-                    MyProjectExceptionEnum.REPEAT_STAR1.getMsg());
-            response.sendRedirect("/error/505");*/
             myStarService.cancel(username,username1);
             ops.delete(username1);
         }else {
             return MyProjectExceptionEnum.ERROR_STAR1.getMsg();
         }
-        /*response.getWriter().write("关注成功");*/
         return "取消关注成功";
     }
 
