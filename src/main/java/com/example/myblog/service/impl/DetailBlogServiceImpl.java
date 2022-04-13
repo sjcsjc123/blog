@@ -92,7 +92,7 @@ public class DetailBlogServiceImpl implements DetailBlogService {
         int starNum = 0;
         for (SearchHit<IndexBlogEs> indexBlogEsSearchHit : search) {
             IndexBlogEs content = indexBlogEsSearchHit.getContent();
-            starNum = starNum + content.getStarNum();
+            starNum = starNum + content.getThumbUpNum();
         }
         return new UserMsgVo(username, fansNum, starNum,
                 articleNum);

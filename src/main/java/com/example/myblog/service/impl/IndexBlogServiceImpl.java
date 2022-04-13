@@ -106,6 +106,9 @@ public class IndexBlogServiceImpl implements IndexBlogService {
         }else {
             logger.info("update thumb up num success");
             thumbUpNum.put(username, username);
+            IndexBlogEs indexBlogEs = searchMapper.findById(id).get();
+            indexBlogEs.setThumbUpNum(indexBlogEs.getThumbUpNum()+1);
+            searchMapper.save(indexBlogEs);
         }
     }
 
@@ -120,6 +123,9 @@ public class IndexBlogServiceImpl implements IndexBlogService {
         }else {
             logger.info("cancel thumb up success");
             thumbUpNum.delete(username);
+            IndexBlogEs indexBlogEs = searchMapper.findById(id).get();
+            indexBlogEs.setThumbUpNum(indexBlogEs.getThumbUpNum()-1);
+            searchMapper.save(indexBlogEs);
         }
     }
 
@@ -133,6 +139,9 @@ public class IndexBlogServiceImpl implements IndexBlogService {
         }else {
             logger.info("star success");
             starNum.put(username,username);
+            IndexBlogEs indexBlogEs = searchMapper.findById(id).get();
+            indexBlogEs.setStarNum(indexBlogEs.getStarNum()+1);
+            searchMapper.save(indexBlogEs);
         }
     }
 
@@ -146,6 +155,9 @@ public class IndexBlogServiceImpl implements IndexBlogService {
         }else {
             logger.info("cancel star success");
             starNum.delete(username);
+            IndexBlogEs indexBlogEs = searchMapper.findById(id).get();
+            indexBlogEs.setStarNum(indexBlogEs.getStarNum()-1);
+            searchMapper.save(indexBlogEs);
         }
     }
 }

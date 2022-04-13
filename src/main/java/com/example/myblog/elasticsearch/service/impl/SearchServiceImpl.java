@@ -133,7 +133,7 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public List<IndexBlogEs> showOrderByWeight() {
         SortBuilder<FieldSortBuilder> sortBuilder =
-                SortBuilders.fieldSort("weight").order(SortOrder.ASC);
+                SortBuilders.fieldSort("weight").order(SortOrder.DESC);
         Pageable pageable = PageRequest.of(0,5);
         NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
                 .withSort(sortBuilder).withPageable(pageable).build();
@@ -149,26 +149,7 @@ public class SearchServiceImpl implements SearchService {
             BoundHashOperations<String, String, String> ops =
                     redisTemplate.boundHashOps("visitUser" + content.getId().toString());
             Long visitNum = ops.size();
-            BoundHashOperations<String, String, String> ops1 =
-                    redisTemplate.boundHashOps("thumbUpNum" + content.getId().toString());
-            Long thumbUpNum = ops1.size();
-            BoundHashOperations<String, String, String> ops2 =
-                    redisTemplate.boundHashOps("starNum" + content.getId().toString());
-            List<ParentComment> parentComments =
-                    mdParentCommentMapper.findByArticleId(content.getId().toString());
-            int parentCommentNum = parentComments.size();
-            int replyCommentNum = 0;
-            for (ParentComment parentComment : parentComments) {
-                int countByParent = mdReplyCommentMapper
-                        .countByParent(parentComment.getUsername());
-                replyCommentNum = replyCommentNum + countByParent;
-            }
-            int commentNum = replyCommentNum + parentCommentNum;
-            Long starNum = ops2.size();
-            content.setStarNum(starNum.intValue());
             content.setVisitNum(visitNum.intValue());
-            content.setThumbUpNum(thumbUpNum.intValue());
-            content.setCommentNum(commentNum);
             indexBlogEs.add(content);
         }
         return indexBlogEs;
