@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 浏览历史记录
+ * @author SJC
  */
 @Data
 @AllArgsConstructor

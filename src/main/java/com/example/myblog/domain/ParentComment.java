@@ -14,6 +14,7 @@ import java.util.Date;
 
 /**
  * 博客评论
+ * @author SJC
  */
 @Data
 @AllArgsConstructor
