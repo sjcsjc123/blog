@@ -7,6 +7,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
 
+/**
+ * @author SJC
+ */
 public class JwtTokenUtil {
 
     //定义token返回头部

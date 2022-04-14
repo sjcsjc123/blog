@@ -12,6 +12,9 @@ import org.jsoup.select.Elements;
 import java.util.StringTokenizer;
 
 
+/**
+ * @author SJC
+ */
 public class MarkdownUtil {
 	// 使用基础功能
     public String markdownToHtml(String markdown){

@@ -1,5 +1,8 @@
 package com.example.myblog.utils;
 
+/**
+ * @author SJC
+ */
 public class IDWorker {
 
     /**
