@@ -3,6 +3,9 @@ package com.example.myblog.exception.advice;
 import com.example.myblog.exception.constant.MyProjectExceptionEnum;
 import lombok.Data;
 
+/**
+ * @author SJC
+ */
 @Data
 public class ExceptionResult {
     private int status;

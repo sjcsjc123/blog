@@ -5,6 +5,9 @@ import com.example.myblog.elasticsearch.entity.IndexBlogEs;
 
 import java.util.List;
 
+/**
+ * @author SJC
+ */
 public interface SearchService {
 
     List<IndexBlogEs> show();
