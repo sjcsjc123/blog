@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * @author SJC
+ */
 @Controller
 @RequestMapping("/blog")
 public class CrudBlogController {

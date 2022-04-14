@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * @author SJC
+ */
 @Controller
 @RequestMapping("/blog")
 public class IndexBlogController {

@@ -11,6 +11,9 @@ import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author SJC
+ */
 @Controller
 @RequestMapping("/blog")
 public class CommentController {

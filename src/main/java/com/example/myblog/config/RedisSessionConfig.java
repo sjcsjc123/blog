@@ -8,6 +8,9 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 
+/**
+ * @author SJC
+ */
 @Configuration
 @EnableRedisHttpSession
 public class RedisSessionConfig {
