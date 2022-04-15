@@ -10,4 +10,6 @@ public interface CategoryService {
 
     List<String> showByWeight();
 
+    void deleteById(Long id);
+
 }

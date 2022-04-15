@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     //表明目前只开设了这几个专栏
     public final static List<String> categoryNames = Arrays.asList("springboot",
-            "java", "redis","mysql","http","Linux","go","算法","博客");
+            "java", "redis","mysql","http","Linux","go","算法","博客","Springboot");
 
     @Override
     public void save(ArticleVo articleVo, String username) {
@@ -66,5 +66,24 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<String> showByWeight() {
         return categoryWeightMapper.showByWeight();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        QueryWrapper<Category> categoryQueryWrapper = new QueryWrapper<>();
+        categoryQueryWrapper.eq("article_id",id);
+        List<Category> categories =
+                categoryMapper.selectList(categoryQueryWrapper);
+        for (Category category : categories) {
+            categoryMapper.deleteById(category);
+            QueryWrapper<CategoryWeight> wrapper = new QueryWrapper<>();
+            wrapper.eq("category",category.getCategoryName());
+            CategoryWeight categoryWeight =
+                    categoryWeightMapper.selectOne(wrapper);
+            categoryWeight.setWeight(categoryWeight.getWeight()-1);
+            categoryWeightMapper.update(categoryWeight,wrapper);
+        }
+
+
     }
 }

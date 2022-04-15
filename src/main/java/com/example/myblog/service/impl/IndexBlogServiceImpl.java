@@ -93,7 +93,7 @@ public class IndexBlogServiceImpl implements IndexBlogService {
     public void deleteById(Long id) {
         indexBlogMapper.deleteById(id);
         searchMapper.deleteById(id);
-        logger.info("index blog and detail blog delete success");
+        logger.info("index blog delete success");
     }
 
     @Override

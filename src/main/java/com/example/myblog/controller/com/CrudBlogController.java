@@ -56,6 +56,7 @@ public class CrudBlogController {
     public String delete(@PathVariable Long id){
         indexBlogService.deleteById(id);
         detailBlogService.deleteById(id);
+        categoryService.deleteById(id);
         return "redirect:/blog/own";
     }
 }
