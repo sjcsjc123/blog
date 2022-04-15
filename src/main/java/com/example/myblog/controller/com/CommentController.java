@@ -25,7 +25,7 @@ public class CommentController {
 
     @PostMapping("/comment/{articleId}/{parentId}")
     public String comment(@RequestParam("comment") String comment,
-                          @PathVariable Long parentId,
+                          @PathVariable String parentId,
                           @PathVariable Long articleId,
                           HttpSession session){
         String username = (String) session.getAttribute("username");
@@ -33,4 +33,9 @@ public class CommentController {
         return "redirect:/blog/list/"+articleId;
     }
 
+    @GetMapping("/deleteComment/{articleId}/{id}")
+    public String delete(@PathVariable String id, @PathVariable Long articleId){
+        commentService.delete(id,articleId);
+        return "redirect:/blog/list/"+articleId;
+    }
 }
