@@ -126,7 +126,8 @@
         <em th:text="${firstCommentVo.parentComment.createTime}"
             style="font-size: 18px" class="text-info"></em>
         <a th:if="${session.username}==${firstCommentVo.parentComment.username}"
-           style="text-decoration: none">删除</a>
+           style="text-decoration: none"
+           th:href="'/blog/deleteComment/'+${detailBlog.id}+'/'+${firstCommentVo.parentComment.id}">删除</a>
         <a class="reply" style="text-decoration: none"
            th:if="${session.username}!=${firstCommentVo.parentComment.username}"
            th:id="${firstCommentVo.parentComment.id}">回复
@@ -149,7 +150,9 @@
               18px"
                 class="text-info"></em>
             <a th:if="${session.username} == ${firstComment.replyComment.child}"
-               style="text-decoration: none">删除</a>
+               style="text-decoration: none"
+               th:href="'/blog/deleteComment/'+${detailBlog.id}+'/'+${firstComment.replyComment.id}">删除
+            </a>
             <a class="reply" style="text-decoration: none"
                th:if="${session.username} != ${firstComment.replyComment.child}"
                th:id="${firstComment.replyComment.parentId}">回复</a>

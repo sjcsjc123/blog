@@ -1,6 +1,5 @@
 package com.example.myblog.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.myblog.domain.ParentComment;
 import com.example.myblog.domain.ReplyComment;
 import com.example.myblog.elasticsearch.entity.IndexBlogEs;
@@ -12,11 +11,6 @@ import com.example.myblog.vo.ReplyCommentVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.redis.core.BoundHashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -46,9 +40,9 @@ public class BlogCommentServiceImpl implements BlogCommentService {
     private List<ReplyCommentVo> replyCommentVos = new ArrayList<>();
 
     @Override
-    public void comment(String comment, Long parentId, Long articleId,
+    public void comment(String comment, String parentId, Long articleId,
                         String username) {
-        if (parentId == 0){
+        if (parentId.equals("0")){
             //父评论，插入到一级评论表
             ParentComment parentComment = new ParentComment();
             parentComment.setComment(comment);
@@ -82,6 +76,18 @@ public class BlogCommentServiceImpl implements BlogCommentService {
         List<ParentComment> parentComments =
                 mdParentCommentMapper.findByArticleId(articleId.toString());
         return generate(parentComments);
+    }
+
+    @Override
+    public void delete(String id,Long articleId) {
+        if (mdParentCommentMapper.existsById(id)){
+            mdParentCommentMapper.deleteById(id);
+        }else {
+            mdReplyCommentMapper.deleteById(id);
+        }
+        IndexBlogEs indexBlogEs = searchMapper.findById(articleId).get();
+        indexBlogEs.setCommentNum(indexBlogEs.getCommentNum()-1);
+        searchMapper.save(indexBlogEs);
     }
 
     private List<FirstCommentVo> generate(List<ParentComment> parentComments){

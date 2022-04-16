@@ -1,7 +1,6 @@
 package com.example.myblog.service;
 
 import com.example.myblog.vo.FirstCommentVo;
-import com.example.myblog.vo.ResultCommentVo;
 
 import java.util.List;
 
@@ -14,8 +13,13 @@ public interface BlogCommentService {
      * @param articleId
      * @param username
      */
-    void comment(String comment,Long parentId,Long articleId,String username);
+    void comment(String comment,String parentId,Long articleId,String username);
 
     List<FirstCommentVo> show(Long articleId);
 
+    /**
+     * 删除评论
+     * @param id
+     */
+    void delete(String id,Long articleId);
 }
