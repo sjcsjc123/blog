@@ -74,7 +74,20 @@ public class CanalScheduled {
     }
 
     private void updateSql(CanalEntry.RowChange rowChange) {
-
+        List<CanalRowDataVo> beforeAndAfterData =
+                getBeforeAndAfterData(rowChange);
+        for (CanalRowDataVo beforeAndAfterDatum : beforeAndAfterData) {
+            IndexBlog indexBlog =
+                    beforeAndAfterDatum.getAfter().toJavaObject(IndexBlog.class);
+            IndexBlogEs indexBlogEs =
+                    searchMapper.findById(indexBlog.getId()).get();
+            indexBlogEs.setWeight(indexBlog.getWeight());
+            indexBlogEs.setAuthor(indexBlog.getAuthor());
+            indexBlogEs.setDescription(indexBlog.getDescription());
+            indexBlogEs.setCreateTime(indexBlog.getCreateTime());
+            indexBlogEs.setTitle(indexBlog.getTitle());
+            searchMapper.save(indexBlogEs);
+        }
     }
 
     private void deleteSql(CanalEntry.RowChange rowChange) {

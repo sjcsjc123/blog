@@ -19,4 +19,6 @@ public interface IndexBlogService {
     void star(Long id, String username);
 
     void cancelStar(Long id, String username);
+
+    void top(Long id);
 }

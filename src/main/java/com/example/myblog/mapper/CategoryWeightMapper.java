@@ -13,4 +13,7 @@ public interface CategoryWeightMapper extends BaseMapper<CategoryWeight> {
     @Select("select category from category_weight order by weight desc limit 5")
     List<String> showByWeight();
 
+    @Select("select category from category_weight order by weight desc")
+    List<String> show();
+
 }

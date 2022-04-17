@@ -48,11 +48,40 @@ body{
     z-index: auto;
     border: none 1px;
     background-color: white;
+    width: 55%;
+    min-height: 70%;
+    float: left;
+    margin-left: 2%;
+    margin-top: 0.5%;
+}
+.index-blog1{
+    display: block;
+    line-height: 22px;
+    position: static;
+    z-index: auto;
+    border: none 1px;
+    background-color: white;
     width: 70%;
     min-height: 70%;
     float: left;
     margin-left: 4%;
     margin-top: 0.5%;
+}
+.class{
+    display: block;
+    line-height: 22px;
+    position: static;
+    z-index: auto;
+    border: none 1px;
+    background-color: white;
+    width: 15%;
+    min-height: 70%;
+    float: left;
+    margin-left: 2%;
+    margin-top: 0.5%;
+}
+.top-blog{
+    color: red;
 }
 .blog-size{
     margin-left: 2%;

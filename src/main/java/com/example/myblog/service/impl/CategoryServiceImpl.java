@@ -86,4 +86,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     }
+
+    @Override
+    public List<String> show() {
+        return categoryWeightMapper.show();
+    }
 }

@@ -59,4 +59,10 @@ public class CrudBlogController {
         categoryService.deleteById(id);
         return "redirect:/blog/own";
     }
+
+    @GetMapping("/top/{id}")
+    public String top(@PathVariable Long id){
+        indexBlogService.top(id);
+        return "redirect:/blog/own";
+    }
 }

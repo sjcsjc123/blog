@@ -62,6 +62,15 @@
 </nav>
 
 <div>
+    <div class="class">
+        <label>分类</label>
+        <div th:each="category : ${classification}">
+            <a th:href="@{'/search/keyword/'+${category}}"
+               style="text-decoration: none">
+                <p th:text="${category}"></p>
+            </a>
+        </div>
+    </div>
     <div class="index-blog">
         <div th:each="show : ${indexBlogs}">
             <div class="form-group">
@@ -69,6 +78,7 @@
                     <a th:href="'/blog/list/'+${show.id}"
                        th:text="${show.title}"
                        style="text-decoration: none"></a>
+                    <span th:if="${show.weight} == 0" class="top-blog">置顶</span>
                 </p>
                 <p class="text-lowercase">
                     <em class="form-control blog-size"

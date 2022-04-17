@@ -47,6 +47,7 @@ public class HistoryController {
         model.addAttribute("weight",indexBlogList1);
         List<String> categoryNames = categoryService.showByWeight();
         model.addAttribute("categoryNames",categoryNames);
+        List<String> list = categoryService.show();
         return "admin/history";
     }
 
