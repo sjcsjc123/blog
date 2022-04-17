@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     //表明目前只开设了这几个专栏
     public final static List<String> categoryNames = Arrays.asList("springboot",
-            "java", "redis","mysql","http","Linux","go","算法","博客","Springboot");
+            "java", "redis","mysql","http","Linux","go","算法","博客","Springboot","设计模式");
 
     @Override
     public void save(ArticleVo articleVo, String username) {
