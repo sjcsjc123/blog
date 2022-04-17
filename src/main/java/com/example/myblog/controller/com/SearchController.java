@@ -31,6 +31,8 @@ public class SearchController {
         model.addAttribute("weight",indexBlogList1);
         List<String> categoryNames = categoryService.showByWeight();
         model.addAttribute("categoryNames",categoryNames);
+        List<String> list = categoryService.show();
+        model.addAttribute("classification",list);
         if (session.getAttribute("username")==null){
             return "list";
         }else {
@@ -50,6 +52,8 @@ public class SearchController {
         model.addAttribute("weight",indexBlogList1);
         List<String> categoryNames = categoryService.showByWeight();
         model.addAttribute("categoryNames",categoryNames);
+        List<String> list = categoryService.show();
+        model.addAttribute("classification",list);
         if (session.getAttribute("username")==null){
             return "list";
         }else {
@@ -69,6 +73,8 @@ public class SearchController {
         model.addAttribute("weight",indexBlogList1);
         List<String> categoryNames = categoryService.showByWeight();
         model.addAttribute("categoryNames",categoryNames);
+        List<String> list = categoryService.show();
+        model.addAttribute("classification",list);
         if (session.getAttribute("username")==null){
             return "list";
         }else {
@@ -87,6 +93,8 @@ public class SearchController {
         model.addAttribute("weight",indexBlogList1);
         List<String> categoryNames = categoryService.showByWeight();
         model.addAttribute("categoryNames",categoryNames);
+        List<String> list = categoryService.show();
+        model.addAttribute("classification",list);
         if (session.getAttribute("username")==null){
             return "list";
         }else {

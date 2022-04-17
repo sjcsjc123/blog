@@ -63,7 +63,7 @@ public class IndexBlogServiceImpl implements IndexBlogService {
         indexBlog.setTitle(articleVo.getTitle());
         indexBlog.setCreateTime(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         //如果是管理员发布的文章，则优先展示
-        if (username.equals("admin")){
+        if (username.equals("邵佳成")){
             indexBlog.setWeight(1);
         }else {
             indexBlog.setWeight(10);
@@ -159,5 +159,27 @@ public class IndexBlogServiceImpl implements IndexBlogService {
             indexBlogEs.setStarNum(indexBlogEs.getStarNum()-1);
             searchMapper.save(indexBlogEs);
         }
+    }
+
+    @Override
+    public void top(Long id){
+        //先判断主页是否有weight为0的博客，有的话就更改为普通的
+        IndexBlog topBlog = indexBlogMapper.selectById(id);
+        QueryWrapper<IndexBlog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("weight",0);
+        IndexBlog oldTop = indexBlogMapper.selectOne(queryWrapper);
+        if (oldTop == null){
+            logger.info("there have no old top blog");
+        }else {
+            if (oldTop.getAuthor().equals("邵佳成")){
+                oldTop.setWeight(1);
+            }else {
+                oldTop.setWeight(10);
+            }
+            logger.info("update old top blog weight");
+            indexBlogMapper.update(oldTop,queryWrapper);
+        }
+        topBlog.setWeight(0);
+        indexBlogMapper.updateById(topBlog);
     }
 }
