@@ -36,7 +36,6 @@ public class CrudBlogController {
         return "admin/addBlog";
     }
 
-
     @GetMapping("/toAdd")
     public String toAdd(){
         return "admin/addBlog";
