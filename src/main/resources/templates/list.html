@@ -61,6 +61,15 @@
 </nav>
 
 <div>
+  <div class="class">
+    <label>分类</label>
+    <div th:each="category : ${classification}">
+      <a th:href="@{'/search/keyword/'+${category}}"
+         style="text-decoration: none">
+        <p th:text="${category}"></p>
+      </a>
+    </div>
+  </div>
   <div class="index-blog">
     <div th:each="show : ${indexBlogs}">
       <div class="form-group">
