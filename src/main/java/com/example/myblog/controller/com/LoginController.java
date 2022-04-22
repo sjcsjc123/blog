@@ -7,11 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -28,8 +26,10 @@ public class LoginController {
     private JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/login")
+    @ResponseBody
     public String hello(@RequestParam("username") String username,
                         @RequestParam("password") String password,
+                        @RequestParam("isRememberMe") boolean isRememberMe,
                         HttpSession session, HttpServletResponse response){
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             session.setAttribute("errorMsg", "用户名或密码不能为空");
@@ -40,6 +40,13 @@ public class LoginController {
             session.setAttribute("username", username);
             String token = jwtTokenUtil.createToken(username);
             response.setHeader(JwtTokenUtil.AUTH_HEADER_KEY,token);
+            if (isRememberMe){
+                Cookie cookie = new Cookie("token",token);
+                cookie.setMaxAge(7 * 24 * 60 * 60);
+                cookie.setDomain("blog.com");
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
         }catch (MyProjectException e){
             session.setAttribute("errorMsg",e.getMyProjectExceptionEnum().getMsg());
             return "error/505";
