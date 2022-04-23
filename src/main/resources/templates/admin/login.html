@@ -39,7 +39,7 @@
                 <li class="active"><a th:href="@{/error/noLogin}">我的关注</a></li>
             </ul>
         </div>
-        <a class="navbar-right" th:href="@{/blog/toLogin}">
+        <a class="navbar-right" th:href="@{/user/toLogin}">
             <h4>登录入口</h4>
         </a>
     </div>
@@ -85,7 +85,7 @@
         }
         $.ajax({
             type: "POST",
-            url: "/blog/login",
+            url: "/user/login",
             data:{
                 "username": username,
                 "password": password,

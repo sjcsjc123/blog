@@ -1,9 +1,7 @@
 package com.example.myblog.utils;
 
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 import java.util.Date;
 
@@ -14,9 +12,7 @@ public class JwtTokenUtil {
 
     //定义token返回头部
     public static final String AUTH_HEADER_KEY = "Authorization";
-
-    //token前缀
-    public static final String TOKEN_PREFIX = "Bearer ";
+    public static final String REFRESH_HEADER_KEY = "RefreshToken";
 
     //签名密钥
     public static final String KEY = "q3t6w9z$C&F)J@NcQfTjWnZr4u7x";
@@ -24,12 +20,31 @@ public class JwtTokenUtil {
     //有效期默认为 2hour
     public static final Long EXPIRATION_TIME = 1000L*60*60*2;
 
+    //有效期默认为 30天
+    public static final Long REFRESH_EXPIRATION_TIME = 1000L*60*60*24*30;
+
     /**
      * 生成token
      */
     public String createToken(String username){
         Date nowTime = new Date();
         Date expirationTime = new Date(nowTime.getTime()+EXPIRATION_TIME);
+        return Jwts.builder().
+                setHeaderParam("type","jwt")
+                .setSubject(username)
+                .setIssuedAt(nowTime)
+                .setExpiration(expirationTime)
+                .signWith(SignatureAlgorithm.HS512,KEY)
+                .compact();
+    }
+
+    /**
+     * 生成refreshToken
+     * 只在登录逻辑中生成
+     */
+    public String createRefreshToken(String username){
+        Date nowTime = new Date();
+        Date expirationTime = new Date(nowTime.getTime()+REFRESH_EXPIRATION_TIME);
         return Jwts.builder().
                 setHeaderParam("type","jwt")
                 .setSubject(username)
@@ -67,10 +82,10 @@ public class JwtTokenUtil {
     private Claims getClaimsFromToken(String token) {
         Claims claims = null;
         try {
-            claims = Jwts.parser()
-                    .setSigningKey(KEY)
-                    .parseClaimsJws(token)
-                    .getBody();
+            JwtParser parser = Jwts.parser();
+            parser.setSigningKey(KEY);
+            Jws<Claims> claimsJws = parser.parseClaimsJws(token);
+            claims = claimsJws.getBody();
         } catch (Exception e) {
         }
         return claims;
@@ -91,4 +106,5 @@ public class JwtTokenUtil {
         Date expiredDate = getExpiredDateFromToken(token);
         return expiredDate.before(new Date());
     }
+
 }

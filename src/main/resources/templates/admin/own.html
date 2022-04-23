@@ -39,9 +39,21 @@
     </div>
     <label class="navbar-right row">
       <h4><em th:text="${session.username}"></em>,你好 <a
-              th:href="@{/blog/loginOut}">
+              th:href="@{/user/loginOut}">
         退出登录</a>
       </h4>
+      <div class="dropdown" style="float: right">
+        <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          消息
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dLabel">
+          <li>
+            <a th:href="'/notification'">通知</a>
+            <a th:href="'/chat'">私信</a>
+          </li>
+        </ul>
+      </div>
     </label>
   </div>
 </nav>
