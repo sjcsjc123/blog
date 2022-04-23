@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.myblog.domain.AdminUser;
 import com.example.myblog.exception.MyProjectException;
 import com.example.myblog.exception.constant.MyProjectExceptionEnum;
+import com.example.myblog.exception.constant.ResponseJson;
 import com.example.myblog.mapper.AdminUserMapper;
 import com.example.myblog.service.AdminUserService;
 import com.example.myblog.utils.JwtTokenUtil;
@@ -24,13 +25,6 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Autowired
     private AdminUserMapper adminUserMapper;
-
-    @Override
-    public Long findIdByUsername(String username) {
-        QueryWrapper<AdminUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username",username);
-        return adminUserMapper.selectOne(queryWrapper).getUserId();
-    }
 
     @Override
     public void login(String username, String password) {

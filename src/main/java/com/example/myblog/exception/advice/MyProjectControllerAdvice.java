@@ -17,4 +17,5 @@ public class MyProjectControllerAdvice {
         MyProjectExceptionEnum myProjectExceptionEnum = myProjectException.getMyProjectExceptionEnum();
         return ResponseEntity.status(myProjectException.getMyProjectExceptionEnum().getCode()).body(new ExceptionResult(myProjectException.getMyProjectExceptionEnum()));
     }
+
 }

@@ -4,6 +4,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -14,6 +15,8 @@ public class MyBlogApplicationTest {
     //DI注入数据源
     @Autowired
     DataSource dataSource;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Test
     public void contextLoads() throws SQLException {
@@ -29,5 +32,15 @@ public class MyBlogApplicationTest {
 
         //关闭连接
         connection.close();
+    }
+
+    @Test
+    void test1(){
+        redisTemplate.opsForValue().set("username:zhangsan", String.valueOf(1));
+        redisTemplate.opsForValue().set("username:zhangsssan",
+                String.valueOf(1));
+        System.out.println(redisTemplate.opsForValue().get("username" +
+                ":zhangsan"));
+        System.out.println(redisTemplate.opsForValue().get("refreshToken:邵佳成"));
     }
 }
