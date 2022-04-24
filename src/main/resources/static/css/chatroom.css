@@ -1,0 +1,268 @@
+.chatBox{
+    width: 50%;
+    height: 80%;
+    border: 1px solid #ccc;
+    position: absolute;
+    margin-left: 25%;
+    display: block;
+}
+
+.BoxHead{
+    width: 100%;
+    height: 52px;
+    background: url(../img/box_head.jpg) no-repeat;
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+}
+
+.headImg{
+    width: 44px;
+    height: 44px;
+    border-radius: 60%;
+    margin:0 10px;
+}
+
+.headImg img{
+    width: 100%;
+    height: 100%;
+    border-radius:50%;
+}
+
+.internetName{
+    width: auto;
+    height: 52px;
+    line-height: 52px;
+    color: white;
+}
+
+.context{
+	-webkit-box-flex: 1;
+	display: -webkit-box;
+	-webkit-box-orient: horizontal;
+}
+
+.conLeft{
+    width: 200px;
+    height: 548px;
+    overflow: auto;
+    background: #fafafa;
+    border-right: solid 1px black;
+}
+
+.conLeft::-webkit-scrollbar{
+    width: 0;
+}
+
+.conLeft ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.newsList{
+    width: 100%;
+    height: 100%;
+    background: whitesmoke;
+}
+
+.conLeft li{
+    width: 100%;
+    height: 62px;
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+}
+
+.conLeft li .liLeft{
+	position: relative;
+    width:30%;
+    height: 100%;
+}
+
+.liLeft img{
+    margin: 10px;
+    width: 42px;
+    height: 42px;
+}
+
+.liRight span{
+    display:block;
+    font-size: 16px;
+    height: 31px;
+    line-height: 31px;
+}
+
+.liRight span:last-child{
+    font-size: 14px;
+    color: #767676;
+    line-height:15px;
+    overflow: hidden;
+}
+
+.defaultConRight{
+    -webkit-box-flex: 1;
+    display: none;
+    -webkit-box-orient: vertical;
+    background: #fafafa;;
+}
+
+.conRight{
+    -webkit-box-flex: 1;
+    display: none;
+    -webkit-box-orient: vertical;
+    height: 548px;
+}
+
+.RightHead{
+    width: 100%;
+    height: 42px;
+    border-bottom: 1px solid #ccc;
+    background: #fafafa;
+}
+
+.headName{
+    width: auto;
+    height: 100%;
+    line-height: 42px;
+    margin-left: 20px;
+    font-family: "微软雅黑";
+    font-size: 18px;
+    float: left;
+}
+
+.headConfig{
+    width: 20%;
+    float: right;
+    height: 100%;
+}
+
+.headConfig ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+}
+
+.headConfig li{
+    margin:10px 5px;
+}
+
+.RightCont{
+    -webkit-box-flex: 1;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 40%;
+}
+
+.RightCont::-webkit-scrollbar{
+    width: 15px;
+    background-color: whitesmoke;
+}
+
+.RightCont ul{
+    list-style: none;
+    padding: 0;
+    /*margin: 0;
+    padding: 0;*/
+}
+
+/*.RightCont ul li{
+    width: 100%;
+    !* height: 42px; *!
+    !*display: -webkit-box;
+    -webkit-box-orient: horizontal;*!
+}*/
+.nesHead{
+    border-radius: 50%;
+    margin-right:10px ;
+    float: right;
+}
+.nesHead img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.news{
+    /* width: 300px; */
+    word-wrap: break-word;
+    background: #eeeeee;
+    padding:5px 16px;
+    margin: 4px;
+    line-height: 24px;
+    font-size: 14px;
+    border-radius:10px;
+    /* margin-left: 180px; */
+    position: relative;
+    float: right;
+    text-align:left;
+}
+
+.answerHead{
+    border-radius: 50%;
+    margin-left:10px;
+    float: left;
+}
+.answerHead img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.answers{
+    /* width: 300px; */
+    word-wrap: break-word;
+    background: #eeeeee;
+    padding:5px 16px;
+    margin: 4px;
+    line-height: 24px;
+    font-size: 14px;
+    border-radius:10px;
+    /* margin-right: 170px; */
+    position: relative;
+    float: left;
+}
+
+.RightFoot{
+    width: 100%;
+    height: auto;
+    border-top: 1px solid #ccc;
+    position: relative;
+}
+
+.sendBtn{
+    width: 68px;
+    height: 25px;
+    background: #0188fb;
+    border: none;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: white;
+}
+.bg{
+    background: #ebebec;
+}
+.hidden-userId{
+    display:none !important;
+}
+.hidden-groupId {
+	display:none !important;
+}
+.newsList-temp {
+    display:none !important;
+}
+
+.red-point{
+    position: relative;
+}
+
+.red-point::before{
+    content: " ";
+    border: 4px solid red;/*设置红色*/
+    border-radius:3px;/*设置圆角*/
+    position: absolute;
+    z-index: 1000;
+    right: 0;
+    margin-right: -20px;
+    margin-top: 10px;
+}

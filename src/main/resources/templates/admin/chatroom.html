@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>博客</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/my.css">
+    <link rel="stylesheet" href="/css/chatroom.css">
+    <base th:href="@{/}">
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/friendList.js"></script>
+    <script src="/js/message.js"></script>
+    <style>
+        body{
+            background: whitesmoke;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 导航-->
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}">博客系统</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/search/all}">博客广场</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/blog/own}">我的博客</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/history/list}">历史记录</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a th:href="@{/user/myStar}">我的关注</a></li>
+            </ul>
+        </div>
+        <label class="navbar-right row">
+            <h4><em th:text="${session.username}"></em>,你好 <a
+                    th:href="@{/user/loginOut}">
+                退出登录</a>
+            </h4>
+            <div class="dropdown" style="float: right">
+                <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    消息
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dLabel">
+                    <li>
+                        <a th:href="'/notification'">通知</a>
+                        <a th:href="'/chat'">私信</a>
+                    </li>
+                </ul>
+            </div>
+        </label>
+    </div>
+</nav>
+
+<div class="chatBox">
+    <div class="BoxHead">
+        <div class="headImg">
+            <img id="avatarUrl" src="https://img1.baidu.com/it/u=4096419636,635686539&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"/>
+        </div>
+        <div id="username" class="internetName"></div>
+    </div>
+    <div class="context">
+        <div class="conLeft">
+            <ul>
+                
+            </ul>
+        </div>
+        <div class="defaultConRight">
+            您还未选中聊天框
+        </div>
+        <div class="conRight">
+            <div class="RightHead">
+                <div class="headName"></div>
+            </div>
+            <div class="RightCont">
+                <ul class="newsList-temp"></ul>
+                <ul class="newsList">
+                
+                </ul>
+            </div>
+            <div class="RightFoot">
+                <div class="inputBox">
+                    <input id="to" type="hidden">
+                    <textarea id="message" style="width: 99%;height: 75px;
+                    border: none;outline: none;" name="" rows="" cols=""></textarea>
+                    <button title="按下回车可发送" class="sendBtn" onclick="sendMessage()">发送
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+</div>
+
+<script type="text/javascript">
+    let username = '[[${session.username}]]';
+    console.log("开始加载用户列表"+username)
+    setUserInfo();
+
+    let socket;
+    if(window.WebSocket){
+        socket = new WebSocket("ws://localhost:9999");
+        socket.onmessage = function(event){
+            let json = JSON.parse(event.data);
+            if (json.status === 200) {
+                let type = json.data.type;
+                console.log("收到一条新信息，类型为：" + type);
+                console.log(json.data);
+                switch(type) {
+                    case "REGISTER":
+                        ws.registerReceive();
+                        break;
+                    case "SINGLE_SENDING":
+                        console.log("信息为"+json.data);
+                        ws.singleReceive(json.data);
+                        break;
+                    default:
+                        console.log("不正确的类型！");
+                }
+            } else {
+                alert(json.msg);
+                console.log(json.msg);
+            }
+        };
+
+        // 连接成功1秒后，将用户信息注册到服务器在线用户表
+        socket.onopen = setTimeout(function(event){
+            console.log("WebSocket已成功连接！");
+            ws.register();
+        }, 1000)
+
+        socket.onclose = function(event){
+            console.log("WebSocket已关闭...");
+        };
+    } else {
+        alert("您的浏览器不支持WebSocket！");
+    }
+</script>
+
+
+</body>
+</html>
